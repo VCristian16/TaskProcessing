@@ -1,12 +1,16 @@
-package pack;
+package dispatcher;
 
 import javax.security.auth.Subject;
 
-import pack.Dispatcher.EventTypeEnum;
+import org.w3c.dom.events.Event;
+import dispatcher.Dispatcher.EventTypeEnum;
+import pack.Student;
 
-public class EventManager extends java.lang.Object {
-
-	public void executeEvent(EventTypeEnum event, Student student) {
+public interface EventManager  {
+	
+	
+	public void executeEvent(EventTypeEnum event, Student student);
+	/*{
 		// TODO Auto-generated method stub
 		if(event.equals("UPDATE")){
 			System.out.println("Updated info for student" +student.getName());
@@ -21,5 +25,7 @@ public class EventManager extends java.lang.Object {
 		
 		
 	}
+	*/
 
 }
+

@@ -1,22 +1,41 @@
 package pack;
- 
+
+import java.io.ObjectInputStream;
+import java.util.concurrent.atomic.AtomicInteger;
+
 class WorkerThread implements Runnable {  
-    private String message;  
-    public WorkerThread(String s){  
-        this.message=s;  
+  
+    
+	AtomicInteger numberOfJobsToExecute;
+	Student b;
+	static int n=1;
+    public WorkerThread(AtomicInteger numberOfJobsToExecute, Student b){  
+    	
+        this.numberOfJobsToExecute=numberOfJobsToExecute; 
+        this.b=b;
     }  
-     public void run() {  
-        System.out.println(Thread.currentThread().getName()+" (Start) message = "+message);  
-        processmessage();//call processmessage method that sleeps the thread for 2 seconds  
+    
+    
+    
+  
+
+
+	public void run() {  
+        System.out.println(Thread.currentThread().getName());    
+        while(numberOfJobsToExecute.decrementAndGet() >= 0){      	
+        processTask();//call processmessage method that sleeps the thread for 2 seconds 
+        
+        }
+            
         System.out.println(Thread.currentThread().getName()+" (End)");//prints thread name  
-    }  
-    private void processmessage() {  
-        try {  Thread.sleep(4000); 
-               int n=1;
+    } 
+     
+     
+    private void processTask() {  
+        try {  Thread.sleep(2000);               
                n++;
-               System.out.println(n);
-        
-        
+               System.out.println(n+" procesat!");
+              
         } catch (InterruptedException e) { e.printStackTrace(); }  
     }  
 }  

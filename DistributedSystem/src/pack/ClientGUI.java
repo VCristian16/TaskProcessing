@@ -26,7 +26,10 @@ import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
-public class ClientSocketFrame extends JFrame implements ActionListener,ItemListener {
+import dispatcher.Dispatcher;
+import dispatcher.Dispatcher.EventTypeEnum;
+
+public class ClientGUI extends JFrame implements ActionListener,ItemListener {
     /**
 	 * 
 	 */
@@ -40,83 +43,83 @@ public class ClientSocketFrame extends JFrame implements ActionListener,ItemList
     JTextField txtMark;
     JTextField txtMark1;
     JButton btnProcess;
+    JButton btnPAUSE ;
+    JButton btnRESUME;
+    JButton btnSTOP;
     JTextArea txtS;
 	JComboBox jc =new JComboBox() ;
    
 
 
 	@SuppressWarnings("unchecked")
-	public ClientSocketFrame() {
+	public ClientGUI() {
         this.setTitle("Simple Sample");
         this.setSize(520, 340);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
         
-     
-
-        lblName = new JLabel("Name: ");
+    
+        lblName = new JLabel("Task Name: ");
         lblName.setBounds(10, 10, 90, 21);
         add(lblName);
-
         txtName = new JTextField();
         txtName.setBounds(105, 10, 90, 21);
-        add(txtName);
-
-        
-        lblAge = new JLabel("Age: ");
+        add(txtName);    
+        lblAge = new JLabel("Input: ");
         lblAge.setBounds(10, 35, 90, 21);
         add(lblAge);
-
         txtAge = new JTextField();
         txtAge.setBounds(105, 35, 90, 21);
-        add(txtAge);
-
-        
-        lblMark = new JLabel("Mark: ");
+        add(txtAge);    
+        lblMark = new JLabel("Task Number: ");
         lblMark.setBounds(10, 60, 90, 21);
-        add(lblMark);
-        
+        add(lblMark);   
         txtMark = new JTextField();
         txtMark.setBounds(105, 60, 90, 21);
         add(txtMark);
         
-  
         btnProcess = new JButton("Process");
         btnProcess.setBounds(200, 40, 90, 21);
         btnProcess.addActionListener(this);
-        add(btnProcess);
+        add(btnProcess);   
+        
+        btnPAUSE = new JButton("PAUSE");
+        btnPAUSE.setBounds(300, 10, 90, 21);
+        btnPAUSE.addActionListener(this);
+        add(btnPAUSE);  
+        
+        btnRESUME = new JButton("RESUME");
+        btnRESUME.setBounds(300, 30, 90, 21);
+        btnRESUME.addActionListener(this);
+        add(btnRESUME);
+        
+        btnSTOP = new JButton("STOP");
+        btnSTOP.setBounds(300, 50, 90, 21);
+        btnSTOP.addActionListener(this);
+        add(btnSTOP);
 
       
-       
         jc.addItem("Save"); 
         jc.addItem("Update"); 
         jc.addItem("Delete"); 
         jc.addItemListener(this);
         jc.setBounds(105, 85, 90, 21);
         add(jc); 
-       
-      
-        
-        
+           
         txtS = new JTextArea();
         txtS.setBounds(10, 170, 390, 120);
         add(txtS);
-          
-        
-
-       
-        
-
 
         this.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new ClientSocketFrame();
-    }
+	
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    	Dispatcher dispatcher =new Dispatcher();
+    	
         if (e.getSource().equals(btnProcess)) {
             try {
                 processInformation();
@@ -126,17 +129,22 @@ public class ClientSocketFrame extends JFrame implements ActionListener,ItemList
                 e1.printStackTrace();
             }
         }
+        else if(e.getSource().equals(btnPAUSE)){
+        	dispatcher.manageDispatch(EventTypeEnum.PAUSE);
+        	
+        }
     }
 
     public void processInformation() throws UnknownHostException, IOException {
+    	
         Socket s = new Socket("localhost", 5000);
         ObjectOutputStream p = new ObjectOutputStream(s.getOutputStream());
 
-        String name = txtName.getText();
-        int mark = Integer.parseInt(txtMark.getText());
-        int age = Integer.parseInt(txtAge.getText());
+        String tName = txtName.getText();
+        int input = Integer.parseInt(txtMark.getText());
+        int number = Integer.parseInt(txtAge.getText());
 
-        p.writeObject(new Student(name, age, mark));
+        p.writeObject(new Student(tName, input, number));
         p.flush();
 
         // Here we read the details from server
@@ -154,5 +162,13 @@ public class ClientSocketFrame extends JFrame implements ActionListener,ItemList
 	     System.out.println(s);
 		
 	}
+	
+	
+	
+	
+	
+    public static void main(String[] args) {
+        new ClientGUI();
+    }
 
 }

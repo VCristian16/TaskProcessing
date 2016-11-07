@@ -6,10 +6,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import pack.Dispatcher.EventTypeEnum;
+import dispatcher.Dispatcher;
+import dispatcher.Dispatcher.EventTypeEnum;
 
-public class ObjectServer {
+public class Server {
 
 
     public static void main(String[] argv) throws Exception {
@@ -20,26 +22,35 @@ public class ObjectServer {
             Socket t = s.accept();// wait for client to connect
             System.out.println("server connected");
             ObjectInputStream b = new ObjectInputStream(t.getInputStream());
+            Student received = (Student) b.readObject();
             
-            
+           int numberOfParties = 1;
+
             //starting thread pool
-            ExecutorService executor = Executors.newFixedThreadPool(5);//creating a pool of 5 threads  
-            for (int i = 0; i < 2; i++) {  
-                Runnable worker = new WorkerThread("" + i);
+            AtomicInteger numberOfJobsToExecute = new AtomicInteger(5);
+            ExecutorService executor = Executors.newFixedThreadPool(numberOfParties);//creating a pool of 5 threads  
+            for (int i = 0; i < numberOfParties; i++) {  
+            	
+                Runnable worker = new WorkerThread(numberOfJobsToExecute,received);
                 
                 executor.execute(worker);//calling execute method of ExecutorService  
               }  
             executor.shutdown();  
             while (!executor.isTerminated()) {   }  
       
+            
+            
+            
+            
+            
             System.out.println("Finished all threads");
             
             
             
             
-            Student received = (Student) b.readObject();
-            Dispatcher dispatcher = new Dispatcher();
-            dispatcher.dispatch(EventTypeEnum.UPDATE, received);
+            
+            //Dispatcher dispatcher = new Dispatcher();
+            //dispatcher.manageDispatch(EventTypeEnum.PAUSE);
             PrintWriter output = new PrintWriter(t.getOutputStream(), true);
             output.println("Student " + received.getName() + " with age: "
                     + received.getAge() + " has been received");
