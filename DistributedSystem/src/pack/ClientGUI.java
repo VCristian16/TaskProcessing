@@ -144,7 +144,7 @@ public class ClientGUI extends JFrame implements ActionListener,ItemListener {
         int input = Integer.parseInt(txtMark.getText());
         int number = Integer.parseInt(txtAge.getText());
 
-        p.writeObject(new Student(tName, input, number));
+        p.writeObject(new Task(tName, input, number));
         p.flush();
 
         // Here we read the details from server

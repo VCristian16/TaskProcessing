@@ -4,12 +4,12 @@ import javax.security.auth.Subject;
 
 import org.w3c.dom.events.Event;
 import dispatcher.Dispatcher.EventTypeEnum;
-import pack.Student;
+import pack.Task;
 
 public interface EventManager  {
 	
 	
-	public void executeEvent(EventTypeEnum event, Student student);
+	public void executeEvent(EventTypeEnum event, Task task);
 	/*{
 		// TODO Auto-generated method stub
 		if(event.equals("UPDATE")){

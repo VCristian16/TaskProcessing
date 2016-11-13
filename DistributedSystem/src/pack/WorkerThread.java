@@ -1,36 +1,33 @@
 package pack;
 
-import java.io.ObjectInputStream;
-import java.util.concurrent.atomic.AtomicInteger;
+
 
 class WorkerThread implements Runnable {  
-  
     
-	AtomicInteger numberOfJobsToExecute;
-	Student b;
+	int workerNumber;
+	Task b;
 	static int n=1;
-    public WorkerThread(AtomicInteger numberOfJobsToExecute, Student b){  
+    public WorkerThread(int i, Task b){  
     	
-        this.numberOfJobsToExecute=numberOfJobsToExecute; 
+        this.workerNumber=i; 
         this.b=b;
     }  
-    
-    
-    
-  
-
 
 	public void run() {  
-        System.out.println(Thread.currentThread().getName());    
-        while(numberOfJobsToExecute.decrementAndGet() >= 0){      	
-        processTask();//call processmessage method that sleeps the thread for 2 seconds 
-        
-        }
-            
-        System.out.println(Thread.currentThread().getName()+" (End)");//prints thread name  
+		 // The thread simply prints 1 to 5
+	      for (int i = 1; i <= 5; ++i) {
+	         System.out.printf("Worker %d: %d\n", workerNumber, i);
+	         
+	         try {
+	            // sleep for 0 to 0.5 second
+	            Thread.sleep((int)(Math.random() * 500));
+	         } catch (InterruptedException e) {}
+	      }     
     } 
      
-     
+
+	
+	
     private void processTask() {  
         try {  Thread.sleep(2000);               
                n++;
@@ -38,4 +35,6 @@ class WorkerThread implements Runnable {
               
         } catch (InterruptedException e) { e.printStackTrace(); }  
     }  
+    
+    
 }  

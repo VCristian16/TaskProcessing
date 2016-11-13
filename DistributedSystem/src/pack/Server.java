@@ -22,19 +22,19 @@ public class Server {
             Socket t = s.accept();// wait for client to connect
             System.out.println("server connected");
             ObjectInputStream b = new ObjectInputStream(t.getInputStream());
-            Student received = (Student) b.readObject();
+            Task received = (Task) b.readObject();
             
-           int numberOfParties = 1;
+           int numberOfThrd = 2;
 
             //starting thread pool
-            AtomicInteger numberOfJobsToExecute = new AtomicInteger(5);
-            ExecutorService executor = Executors.newFixedThreadPool(numberOfParties);//creating a pool of 5 threads  
-            for (int i = 0; i < numberOfParties; i++) {  
-            	
-                Runnable worker = new WorkerThread(numberOfJobsToExecute,received);
-                
-                executor.execute(worker);//calling execute method of ExecutorService  
-              }  
+           // AtomicInteger numberOfJobsToExecute = new AtomicInteger(5);
+           int numWorkers = 5;
+            ExecutorService executor = Executors.newFixedThreadPool(numberOfThrd);//creating a pool of 5 threads  
+            WorkerThread[] workers = new WorkerThread[numWorkers];
+            for (int i = 0; i < numWorkers; ++i) {
+               workers[i] = new WorkerThread(i+1,received);
+               executor.execute(workers[i]);
+            }
             executor.shutdown();  
             while (!executor.isTerminated()) {   }  
       
@@ -53,7 +53,7 @@ public class Server {
             //dispatcher.manageDispatch(EventTypeEnum.PAUSE);
             PrintWriter output = new PrintWriter(t.getOutputStream(), true);
             output.println("Student " + received.getName() + " with age: "
-                    + received.getAge() + " has been received");
+                    + received.getData() + " has been received");
             b.close();
             output.close();
             t.close();
