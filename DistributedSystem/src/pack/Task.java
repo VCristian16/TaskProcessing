@@ -5,10 +5,11 @@ import java.io.Serializable;
 public class Task implements Serializable {
 
     private String name;
-    private int data;
+    private   int data;
     private int id;
+    private Task task;
     
-	public Task(String name, int data, int id) {
+    public  Task(String name, int data, int id) {
 		super();
 		this.name = name;
 		this.data = data;
@@ -33,6 +34,12 @@ public class Task implements Serializable {
 		this.id = id;
 	}
 
-   
+  public void setTask(Task task){
+	 this.task=task;
+  }
+  
+  public Task getTask(){
+	  return task;
+  }
 
 }

@@ -39,7 +39,7 @@ public class ClientGUI extends JFrame implements ActionListener,ItemListener {
     JLabel lblMark;
     JLabel lblMark1;
     JTextField txtName;
-    JTextField txtAge;
+    JTextField txtData;
     JTextField txtMark;
     JTextField txtMark1;
     JButton btnProcess;
@@ -68,9 +68,9 @@ public class ClientGUI extends JFrame implements ActionListener,ItemListener {
         lblAge = new JLabel("Input: ");
         lblAge.setBounds(10, 35, 90, 21);
         add(lblAge);
-        txtAge = new JTextField();
-        txtAge.setBounds(105, 35, 90, 21);
-        add(txtAge);    
+        txtData = new JTextField();
+        txtData.setBounds(105, 35, 90, 21);
+        add(txtData);   
         lblMark = new JLabel("Task Number: ");
         lblMark.setBounds(10, 60, 90, 21);
         add(lblMark);   
@@ -123,6 +123,7 @@ public class ClientGUI extends JFrame implements ActionListener,ItemListener {
         if (e.getSource().equals(btnProcess)) {
             try {
                 processInformation();
+                dispatcher.manageDispatch(EventTypeEnum.START);
             } catch (UnknownHostException e1) {
                 e1.printStackTrace();
             } catch (IOException e1) {
@@ -133,6 +134,10 @@ public class ClientGUI extends JFrame implements ActionListener,ItemListener {
         	dispatcher.manageDispatch(EventTypeEnum.PAUSE);
         	
         }
+        else if(e.getSource().equals(btnRESUME)){
+        	dispatcher.manageDispatch(EventTypeEnum.RESUME);
+        	
+        }
     }
 
     public void processInformation() throws UnknownHostException, IOException {
@@ -140,11 +145,11 @@ public class ClientGUI extends JFrame implements ActionListener,ItemListener {
         Socket s = new Socket("localhost", 5000);
         ObjectOutputStream p = new ObjectOutputStream(s.getOutputStream());
 
-        String tName = txtName.getText();
-        int input = Integer.parseInt(txtMark.getText());
-        int number = Integer.parseInt(txtAge.getText());
+        String tName = txtName.getText();       
+        int data = Integer.parseInt(txtData.getText());
+        int mark = Integer.parseInt(txtMark.getText());
 
-        p.writeObject(new Task(tName, input, number));
+        p.writeObject(new Task(tName, data, mark));
         p.flush();
 
         // Here we read the details from server
@@ -162,8 +167,6 @@ public class ClientGUI extends JFrame implements ActionListener,ItemListener {
 	     System.out.println(s);
 		
 	}
-	
-	
 	
 	
 	

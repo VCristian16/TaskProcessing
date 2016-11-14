@@ -21,14 +21,15 @@ public class Server {
         while (true) {
             Socket t = s.accept();// wait for client to connect
             System.out.println("server connected");
+           
             ObjectInputStream b = new ObjectInputStream(t.getInputStream());
-            Task received = (Task) b.readObject();
+            Task received = (Task) b.readObject();          
+           
             
-           int numberOfThrd = 2;
-
+            int numberOfThrd = 2;
             //starting thread pool
            // AtomicInteger numberOfJobsToExecute = new AtomicInteger(5);
-           int numWorkers = 5;
+            int numWorkers = 5;
             ExecutorService executor = Executors.newFixedThreadPool(numberOfThrd);//creating a pool of 5 threads  
             WorkerThread[] workers = new WorkerThread[numWorkers];
             for (int i = 0; i < numWorkers; ++i) {
@@ -36,19 +37,8 @@ public class Server {
                executor.execute(workers[i]);
             }
             executor.shutdown();  
-            while (!executor.isTerminated()) {   }  
-      
-            
-            
-            
-            
-            
+            while (!executor.isTerminated()) {   }   
             System.out.println("Finished all threads");
-            
-            
-            
-            
-            
             //Dispatcher dispatcher = new Dispatcher();
             //dispatcher.manageDispatch(EventTypeEnum.PAUSE);
             PrintWriter output = new PrintWriter(t.getOutputStream(), true);

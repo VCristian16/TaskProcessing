@@ -9,10 +9,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+import pack.Task;
+
 
 
 public class Dispatcher {
-	public enum EventTypeEnum {PAUSE,RESUME,STOP};
+	public enum EventTypeEnum {START,PAUSE,RESUME,STOP};
 	
 	
 	Logger logger = Logger.getLogger("MyLog");  
@@ -20,7 +22,17 @@ public class Dispatcher {
 
 	public void manageDispatch(EventTypeEnum event)
 	{
-	    
+		
+	    if (event == EventTypeEnum.PAUSE){
+	    	Pause pause=new Pause();
+	    	pause.executeEvent(event);
+	    	
+	    }
+	    else if (event == EventTypeEnum.START){
+	    	Start process=new Start();
+	    	process.executeEvent(event);
+	    	
+	    }
 	 
 	}
 	

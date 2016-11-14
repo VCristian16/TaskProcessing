@@ -6,7 +6,7 @@ import pack.Task;
 public class Stop implements EventManager{
 
 	@Override
-	public void executeEvent(EventTypeEnum event,Task task) {
+	public void executeEvent(EventTypeEnum event) {
 		// TODO Auto-generated method stub
 		
 	}
