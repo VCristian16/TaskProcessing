@@ -35,9 +35,10 @@ public class Server {
             for (int i = 0; i < numWorkers; ++i) {
                workers[i] = new WorkerThread(i+1,received);
                executor.execute(workers[i]);
+   
             }
             executor.shutdown();  
-            while (!executor.isTerminated()) {   }   
+            while (!executor.isTerminated()) ;  
             System.out.println("Finished all threads");
             //Dispatcher dispatcher = new Dispatcher();
             //dispatcher.manageDispatch(EventTypeEnum.PAUSE);

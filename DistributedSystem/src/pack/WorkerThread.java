@@ -47,7 +47,7 @@ public class WorkerThread implements Runnable {
          	         
          	         try {
          	            // sleep for 0 to 0.5 second
-         	            Thread.sleep((int)(Math.random() * 500));
+         	            Thread.sleep((int)(4 * 500));
          	         } catch (InterruptedException e) {}
          	      }  
 

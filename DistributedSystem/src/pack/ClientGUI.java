@@ -28,6 +28,7 @@ import javax.swing.ListSelectionModel;
 
 import dispatcher.Dispatcher;
 import dispatcher.Dispatcher.EventTypeEnum;
+import dispatcher.Start;
 
 public class ClientGUI extends JFrame implements ActionListener,ItemListener {
     /**
@@ -119,16 +120,20 @@ public class ClientGUI extends JFrame implements ActionListener,ItemListener {
     @Override
     public void actionPerformed(ActionEvent e) {
     	Dispatcher dispatcher =new Dispatcher();
+    	String tName = txtName.getText();       
+        int data = Integer.parseInt(txtData.getText());
+        int mark = Integer.parseInt(txtMark.getText());
     	
         if (e.getSource().equals(btnProcess)) {
-            try {
-                processInformation();
-                dispatcher.manageDispatch(EventTypeEnum.START);
-            } catch (UnknownHostException e1) {
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+                Start start =new Start(tName,data,mark,txtS);
+                try
+                {
+                start.execute();
+                } catch(Exception e1){
+                	e1.printStackTrace();
+              }
+             //dispatcher.manageDispatch(EventTypeEnum.START);
+            
         }
         else if(e.getSource().equals(btnPAUSE)){
         	dispatcher.manageDispatch(EventTypeEnum.PAUSE);
@@ -140,26 +145,7 @@ public class ClientGUI extends JFrame implements ActionListener,ItemListener {
         }
     }
 
-    public void processInformation() throws UnknownHostException, IOException {
-    	
-        Socket s = new Socket("localhost", 5000);
-        ObjectOutputStream p = new ObjectOutputStream(s.getOutputStream());
-
-        String tName = txtName.getText();       
-        int data = Integer.parseInt(txtData.getText());
-        int mark = Integer.parseInt(txtMark.getText());
-
-        p.writeObject(new Task(tName, data, mark));
-        p.flush();
-
-        // Here we read the details from server
-        BufferedReader response = new BufferedReader(new InputStreamReader(
-                s.getInputStream()));
-        txtS.setText("The server respond: " + response.readLine());
-        p.close();
-        response.close();
-        s.close();
-    }
+  
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {

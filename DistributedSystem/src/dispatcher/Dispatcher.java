@@ -28,12 +28,7 @@ public class Dispatcher {
 	    	pause.executeEvent(event);
 	    	
 	    }
-	    else if (event == EventTypeEnum.START){
-	    	Start process=new Start();
-	    	process.executeEvent(event);
-	    	
-	    }
-	 
+	    
 	}
 	
 
