@@ -24,7 +24,7 @@ public class Server {
            
             ObjectInputStream b = new ObjectInputStream(t.getInputStream());
             Task received = (Task) b.readObject();          
-           
+            
             
             int numberOfThrd = 2;
             //starting thread pool
